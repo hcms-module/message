@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Message\Controller;
 
+use App\Annotation\Api;
 use App\Annotation\View;
 use App\Application\Admin\Controller\AdminAbstractController;
 use App\Application\Admin\Lib\RenderParam;
@@ -33,6 +34,7 @@ class MessageController extends AdminAbstractController
 
     /**
      * 创建测试消息
+     * @Api()
      * @PostMapping(path="index/create")
      */
     public function createMessage()
@@ -49,6 +51,7 @@ class MessageController extends AdminAbstractController
 
     /**
      * 重新执行消息处理
+     * @Api()
      * @PostMapping(path="index/handle")
      */
     public function messageHandle()
@@ -66,6 +69,7 @@ class MessageController extends AdminAbstractController
 
     /**
      * 删除消息记录
+     * @Api()
      * @PostMapping(path="index/delete")
      */
     public function messageDelete()
@@ -81,6 +85,7 @@ class MessageController extends AdminAbstractController
 
     /**
      * 消息列表
+     * @Api()
      * @GetMapping(path="index/lists")
      */
     public function lists()
@@ -101,15 +106,12 @@ class MessageController extends AdminAbstractController
             ->orderBy('message_id', 'DESC')
             ->paginate();
 
-        return $this->returnSuccessJson(compact('lists'));
+        return compact('lists');
     }
 
     /**
      * @View()
      * @GetMapping(path="index")
      */
-    public function index()
-    {
-        return RenderParam::display();
-    }
+    public function index() { }
 }

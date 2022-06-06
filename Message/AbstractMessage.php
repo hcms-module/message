@@ -21,15 +21,15 @@ abstract class AbstractMessage
 {
     protected Message $message;
 
-    protected string $title;
-    protected string $content;
-    protected string $target;
-    protected string $target_type;
-    protected string $sender;
-    protected string $sender_type;
-    protected string $receiver;
-    protected string $receiver_type;
-    protected string $class_name;
+    protected string $title = '';
+    protected string $content = '';
+    protected string $target = '';
+    protected string $target_type = '';
+    protected string $sender = '';
+    protected string $sender_type = '';
+    protected string $receiver = '';
+    protected string $receiver_type = '';
+    protected string $class_name = '';
 
     /**
      * @Inject()
