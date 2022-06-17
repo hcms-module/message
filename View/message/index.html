@@ -1,12 +1,14 @@
 <div class="page-container" v-cloak>
     <el-card>
-        <div slot="header" class="breadcrumb">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>消息列表</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
+        <template #header>
+            <div class="breadcrumb">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item>消息列表</el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
+        </template>
         <div>
-            <el-form size="small" :inline="true">
+            <el-form :inline="true">
                 <el-form-item>
                     <el-input style="width: 200px;" v-model="where.title" clearable placeholder="标题"></el-input>
                 </el-form-item>
@@ -32,9 +34,9 @@
                 </el-form-item>
             </el-form>
             <div style="margin-bottom: 20px;">
-                <el-button size="small" type="primary" @click="searchEvent">查询</el-button>
-                <el-button size="small" type="primary" @click="createEvent">创建测试消息</el-button>
-                <el-radio-group style="margin-left: 20px" @change="searchEvent" size="small"
+                <el-button type="primary" @click="searchEvent">查询</el-button>
+                <el-button type="primary" @click="createEvent">创建测试消息</el-button>
+                <el-radio-group style="margin-left: 20px" @change="searchEvent"
                                 v-model="where.process_status">
                     <el-radio-button label="">全部</el-radio-button>
                     <el-radio-button label="0">未处理</el-radio-button>
@@ -45,7 +47,7 @@
         </div>
         <div>
             <el-table
-                    size="small"
+
                     :data="data_list"
                     style="width: 100%">
                 <el-table-column
@@ -69,7 +71,7 @@
                         prop="target"
                         label="来源"
                         min-width="100">
-                    <template slot-scope="{row}">
+                    <template #default="{row}">
                         <div>{{row.target}}</div>
                         <div>{{row.target_type}}</div>
                     </template>
@@ -79,7 +81,7 @@
                         prop="target"
                         label="接收者"
                         min-width="100">
-                    <template slot-scope="{row}">
+                    <template #default="{row}">
                         <div>{{row.receiver}}</div>
                         <div>{{row.receiver_type}}</div>
                     </template>
@@ -89,7 +91,7 @@
                         prop="sender"
                         label="发送者"
                         min-width="100">
-                    <template slot-scope="{row}">
+                    <template #default="{row}">
                         <div>{{row.sender}}</div>
                         <div>{{row.sender_type}}</div>
                     </template>
@@ -98,20 +100,20 @@
                         align="center"
                         prop="read_time"
                         label="处理（发送）状态"
-                        min-width="140">
-                    <template slot-scope="{row}">
+                        min-width="160">
+                    <template #default="{row}">
                         <div style="position: relative;">
                             <div v-if="row.process_status==1">
-                                <el-tag type="success" size="mini">已处理</el-tag>
+                                <el-tag type="success">已处理</el-tag>
                                 <div>
                                     {{row.process_time}}
                                 </div>
                             </div>
                             <div v-if="row.process_status==0">
-                                <el-tag type="primary" size="mini">未处理</el-tag>
+                                <el-tag type="primary">未处理</el-tag>
                             </div>
                             <div v-if="row.process_status==2">
-                                <el-tag type="danger" size="mini">处理失败</el-tag>
+                                <el-tag type="danger">处理失败</el-tag>
                                 <div>
                                     <div>处理次数： {{row.process_count}}</div>
                                     {{row.process_time}}
@@ -142,34 +144,34 @@
                         prop="read_time"
                         label="已读状态"
                         min-width="140">
-                    <template slot-scope="{row}">
+                    <template #default="{row}">
                         <div v-if="row.read_time">
-                            <el-tag type="success" size="mini">已读</el-tag>
+                            <el-tag type="success">已读</el-tag>
                             <div>
                                 {{row.read_time}}
                             </div>
                         </div>
                         <div v-else>
-                            <el-tag type="danger" size="mini">未读</el-tag>
+                            <el-tag type="danger">未读</el-tag>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
                         prop="created_at"
                         label="创建时间"
-                        width="140">
+                        width="160">
                 </el-table-column>
                 <el-table-column
                         fixed="right"
                         align="center"
                         min-width="180"
                         label="操作">
-                    <template slot-scope="{row}">
+                    <template #default="{row}">
                         <el-link>
-                            <el-button @click="handleEvent(row)" size="small" type="primary">处理</el-button>
+                            <el-button @click="handleEvent(row)" type="primary">处理</el-button>
                         </el-link>
                         <el-link @click="deleteEvent(row)">
-                            <el-button size="small" type="danger">删除</el-button>
+                            <el-button type="danger">删除</el-button>
                         </el-link>
                     </template>
                 </el-table-column>
@@ -188,60 +190,65 @@
         </div>
     </el-card>
 </div>
+<style>
+    .el-form--inline .el-form-item {
+        margin-right: 18px;
+    }
+</style>
 
 <script>
-    $(function () {
-        new Vue({
-            el: ".page-container",
-            data: {
+    const App = {
+        data() {
+            return {
                 is_init_list: true,
                 where: {
                     process_status: ""
                 },
-            },
-            methods: {
-                handleEvent({message_id}) {
-                    this.$confirm("是否确认重新执行处理操作？", '提示').then(() => {
-                        this.httpPost("{:url('message/message/index/handle')}", {message_id}).then(res => {
-                            if (res.status) {
-                                this.$message.success(res.msg)
-                                this.GetList()
-                            }
-                        })
-                    })
-                },
-                createEvent() {
-                    this.httpPost("{:url('message/message/index/create')}").then(res => {
+            }
+        },
+        methods: {
+            handleEvent({message_id}) {
+                this.$confirm("是否确认重新执行处理操作？", '提示').then(() => {
+                    this.httpPost("{:url('message/message/index/handle')}", {message_id}).then(res => {
                         if (res.status) {
                             this.$message.success(res.msg)
                             this.GetList()
                         }
                     })
-                },
-                GetList() {
-                    this.httpGet("{:url('message/message/index/lists')}", {
-                        page: this.current_page,
-                        where: this.where
-                    }).then(res => {
-                        let {lists = {}} = res.data
-                        this.handRes(lists)
+                })
+            },
+            createEvent() {
+                this.httpPost("{:url('message/message/index/create')}").then(res => {
+                    if (res.status) {
+                        this.$message.success(res.msg)
+                        this.GetList()
+                    }
+                })
+            },
+            GetList() {
+                this.httpGet("{:url('message/message/index/lists')}", {
+                    page: this.current_page,
+                    where: this.where
+                }).then(res => {
+                    let {lists = {}} = res.data
+                    this.handRes(lists)
+                })
+            },
+            deleteEvent({message_id}) {
+                this.$confirm("是否确认删除该记录？", '提示').then(() => {
+                    this.httpPost("{:url('message/message/index/delete')}", {message_id}).then(res => {
+                        if (res.status) {
+                            this.$message.success(res.msg)
+                            this.GetList()
+                        }
                     })
-                },
-                deleteEvent({message_id}) {
-                    this.$confirm("是否确认删除该记录？", '提示').then(() => {
-                        this.httpPost("{:url('message/message/index/delete')}", {message_id}).then(res => {
-                            if (res.status) {
-                                this.$message.success(res.msg)
-                                this.GetList()
-                            }
-                        })
-                    })
-                },
-                searchEvent() {
-                    this.current_page = 1
-                    this.GetList()
-                }
+                }).catch(err => {
+                })
+            },
+            searchEvent() {
+                this.current_page = 1
+                this.GetList()
             }
-        })
-    })
+        }
+    }
 </script>

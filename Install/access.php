@@ -21,7 +21,7 @@ return [
         'params' => '',
         'sort' => 100,
         'is_menu' => 1,
-        'menu_icon' => 'el-icon-chat-line-round',
+        'menu_icon' => 'line-icon-pinglun',
         'children' => []
     ]
 ];
