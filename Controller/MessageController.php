@@ -6,11 +6,11 @@ namespace App\Application\Message\Controller;
 
 use App\Annotation\Api;
 use App\Annotation\View;
-use App\Application\Admin\Controller\AdminAbstractController;
 use App\Application\Admin\Middleware\AdminMiddleware;
 use App\Application\Message\Job\MessageProcessJob;
 use App\Application\Message\Message\SimpleMessage;
 use App\Application\Message\Model\Message;
+use App\Controller\AbstractController;
 use Hyperf\AsyncQueue\Driver\DriverFactory;
 use Hyperf\AsyncQueue\Driver\DriverInterface;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -20,7 +20,7 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 
 #[Middleware(AdminMiddleware::class)]
 #[Controller(prefix: "/message/message")]
-class MessageController extends AdminAbstractController
+class MessageController extends AbstractController
 {
     protected DriverInterface $driver;
 
