@@ -28,25 +28,25 @@ use Hyperf\DbConnection\Model\Model;
 class Message extends Model
 {
 
-    protected $primaryKey = 'message_id';
+    protected string $primaryKey = 'message_id';
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @var ?string
      */
-    protected $table = 'message';
+    protected ?string $table = 'message';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected array $fillable = [];
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
+    protected array $casts = [
         'message_id' => 'integer',
         'read_status' => 'integer',
         'process_status' => 'integer',

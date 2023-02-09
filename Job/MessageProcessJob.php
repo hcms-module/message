@@ -15,7 +15,7 @@ use Hyperf\AsyncQueue\Job;
 
 class MessageProcessJob extends Job
 {
-    protected $maxAttempts = 3;
+    protected int $maxAttempts = 3;
     public int $message_id;
 
     /**
