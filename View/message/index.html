@@ -209,7 +209,7 @@
         methods: {
             handleEvent({message_id}) {
                 this.$confirm("是否确认重新执行处理操作？", '提示').then(() => {
-                    this.httpPost("{:url('message/message/index/handle')}", {message_id}).then(res => {
+                    this.httpPost("{:url('message/message/handle')}", {message_id}).then(res => {
                         if (res.status) {
                             this.$message.success(res.msg)
                             this.GetList()
@@ -218,7 +218,7 @@
                 })
             },
             createEvent() {
-                this.httpPost("{:url('message/message/index/create')}").then(res => {
+                this.httpPost("{:url('message/message/create')}").then(res => {
                     if (res.status) {
                         this.$message.success(res.msg)
                         this.GetList()
@@ -226,7 +226,7 @@
                 })
             },
             GetList() {
-                this.httpGet("{:url('message/message/index/lists')}", {
+                this.httpGet("{:url('message/message/lists')}", {
                     page: this.current_page,
                     where: this.where
                 }).then(res => {
@@ -236,7 +236,7 @@
             },
             deleteEvent({message_id}) {
                 this.$confirm("是否确认删除该记录？", '提示').then(() => {
-                    this.httpPost("{:url('message/message/index/delete')}", {message_id}).then(res => {
+                    this.httpPost("{:url('message/message/delete')}", {message_id}).then(res => {
                         if (res.status) {
                             this.$message.success(res.msg)
                             this.GetList()

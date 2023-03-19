@@ -31,9 +31,7 @@ abstract class AbstractMessage
     protected string $receiver_type = '';
     protected string $class_name = '';
 
-    /**
-     * @Inject()
-     */
+    #[Inject]
     protected DriverFactory $driver_factory;
     protected DriverInterface $driver;
 

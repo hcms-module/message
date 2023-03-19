@@ -6,12 +6,11 @@ namespace App\Application\Message\Controller;
 
 use App\Annotation\Api;
 use App\Annotation\View;
-use App\Application\Admin\Controller\AdminAbstractController;
-use App\Application\Admin\Lib\RenderParam;
 use App\Application\Admin\Middleware\AdminMiddleware;
 use App\Application\Message\Job\MessageProcessJob;
 use App\Application\Message\Message\SimpleMessage;
 use App\Application\Message\Model\Message;
+use App\Controller\AbstractController;
 use Hyperf\AsyncQueue\Driver\DriverFactory;
 use Hyperf\AsyncQueue\Driver\DriverInterface;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -19,11 +18,9 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 
-/**
- * @Middleware(AdminMiddleware::class)
- * @Controller(prefix="/message/message")
- */
-class MessageController extends AdminAbstractController
+#[Middleware(AdminMiddleware::class)]
+#[Controller(prefix: "/message/message")]
+class MessageController extends AbstractController
 {
     protected DriverInterface $driver;
 
@@ -34,9 +31,9 @@ class MessageController extends AdminAbstractController
 
     /**
      * 创建测试消息
-     * @Api()
-     * @PostMapping(path="index/create")
      */
+    #[Api]
+    #[PostMapping("create")]
     public function createMessage()
     {
         $message = new SimpleMessage();
@@ -51,9 +48,9 @@ class MessageController extends AdminAbstractController
 
     /**
      * 重新执行消息处理
-     * @Api()
-     * @PostMapping(path="index/handle")
      */
+    #[Api]
+    #[PostMapping("handle")]
     public function messageHandle()
     {
         $message_id = (int)$this->request->post('message_id', 0);
@@ -69,9 +66,9 @@ class MessageController extends AdminAbstractController
 
     /**
      * 删除消息记录
-     * @Api()
-     * @PostMapping(path="index/delete")
      */
+    #[Api]
+    #[PostMapping("delete")]
     public function messageDelete()
     {
         $message_id = $this->request->input('message_id', 0);
@@ -85,9 +82,9 @@ class MessageController extends AdminAbstractController
 
     /**
      * 消息列表
-     * @Api()
-     * @GetMapping(path="index/lists")
      */
+    #[Api]
+    #[GetMapping("lists")]
     public function lists()
     {
         $_where = $this->request->input('where', []);
@@ -109,9 +106,9 @@ class MessageController extends AdminAbstractController
         return compact('lists');
     }
 
-    /**
-     * @View()
-     * @GetMapping(path="index")
-     */
-    public function index() { }
+    #[View]
+    #[GetMapping("")]
+    public function index()
+    {
+    }
 }

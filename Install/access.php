@@ -17,7 +17,7 @@ return [
     [
         'parent_access_id' => 0,
         'access_name' => '消息管理',
-        'uri' => 'message/message/index',
+        'uri' => 'message/message',
         'params' => '',
         'sort' => 100,
         'is_menu' => 1,
