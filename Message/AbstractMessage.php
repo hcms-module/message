@@ -139,10 +139,13 @@ abstract class AbstractMessage
 
     /**
      * @param string $title
+     * @return $this
      */
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -157,31 +160,34 @@ abstract class AbstractMessage
     }
 
     /**
-     * @param mixed $target
+     * @param string $target
      * @return $this
      */
-    public function setTarget($target = 0): self
+    public function setTarget(string $target = '0'): self
     {
-        $this->target = (string)$target;
+        $this->target = $target;
 
         return $this;
     }
 
     /**
      * @param string $target_type
+     * @return $this
      */
-    public function setTargetType(string $target_type): void
+    public function setTargetType(string $target_type): self
     {
         $this->target_type = $target_type;
+
+        return $this;
     }
 
     /**
-     * @param mixed $sender
+     * @param string $sender
      * @return $this
      */
-    public function setSender($sender = 0): self
+    public function setSender(string $sender = '0'): self
     {
-        $this->sender = (string)$sender;
+        $this->sender = $sender;
 
         return $this;
     }
@@ -199,12 +205,12 @@ abstract class AbstractMessage
     }
 
     /**
-     * @param mixed $receiver
+     * @param string $receiver
      * @return $this
      */
-    public function setReceiver($receiver = 0): self
+    public function setReceiver(string $receiver = '0'): self
     {
-        $this->receiver = (string)$receiver;
+        $this->receiver = $receiver;
 
         return $this;
     }
